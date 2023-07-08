@@ -5,15 +5,18 @@ class CustomTextFormField extends StatelessWidget {
       {super.key,
       required this.label,
       required this.isDone,
+      this.myFocus,
       required this.onChanged});
 
   final String? label;
   final bool isDone;
+  final FocusNode? myFocus;
   final Function(String) onChanged;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      focusNode: myFocus,
       keyboardType: TextInputType.number,
       textInputAction: isDone ? TextInputAction.done : TextInputAction.next,
       decoration: InputDecoration(

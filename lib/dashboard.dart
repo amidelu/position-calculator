@@ -12,12 +12,13 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   static final _formKey = GlobalKey<FormState>();
   bool _isLongActive = true;
+  final FocusNode _entryPriceFocus = FocusNode();
 
   // Entry variables
-  double? _totalCapital;
-  double? _entryPrice = 0.00;
-  double? _takeProfit = 0.00;
-  double? _stopLoss = 0.00;
+  String? _totalCapital;
+  String? _entryPrice = '0.00';
+  String? _takeProfit = '0.00';
+  String? _stopLoss = '0.00';
 
   double _positionSize = 0.0;
   double riskRatio = 0.0;
@@ -26,32 +27,59 @@ class _DashboardState extends State<Dashboard> {
   double _profitAmount = 0.0;
   double _lossAmount = 0.0;
 
+  _resetAllValue() {
+    setState(() {
+      _formKey.currentState!.reset();
+      _entryPriceFocus.requestFocus();
+
+      _positionSize = 0.0;
+      riskRatio = 0.0;
+      _riskAmount = 0.0;
+      _coinAmount = 0.0;
+      _profitAmount = 0.0;
+      _lossAmount = 0.0;
+    });
+  }
+
   _allCalculation() {
     setState(() {
-      _riskAmount = (_totalCapital! * 1) / 100;
+      _riskAmount = (double.parse(_totalCapital!) * 1) / 100;
 
       if (_isLongActive) {
-        riskRatio = (_entryPrice! - _stopLoss!) / _entryPrice!;
+        riskRatio = (double.parse(_entryPrice!) - double.parse(_stopLoss!)) /
+            double.parse(_entryPrice!);
         _positionSize = _riskAmount / riskRatio;
-        _coinAmount = _positionSize / _entryPrice!;
-        _profitAmount = (_takeProfit! - _entryPrice!) * _coinAmount;
-        _lossAmount = (_stopLoss! - _entryPrice!) * _coinAmount;
+        _coinAmount = _positionSize / double.parse(_entryPrice!);
+        _profitAmount =
+            (double.parse(_takeProfit!) - double.parse(_entryPrice!)) *
+                _coinAmount;
+        _lossAmount = (double.parse(_stopLoss!) - double.parse(_entryPrice!)) *
+            _coinAmount;
       } else {
-        riskRatio = (_stopLoss! - _entryPrice!) / _entryPrice!;
+        riskRatio = (double.parse(_stopLoss!) - double.parse(_entryPrice!)) /
+            double.parse(_entryPrice!);
         _positionSize = _riskAmount / riskRatio;
-        _coinAmount = _positionSize / _entryPrice!;
-        _profitAmount = (_entryPrice! - _takeProfit!) * _coinAmount;
-        _lossAmount = (_entryPrice! - _stopLoss!) * _coinAmount;
+        _coinAmount = _positionSize / double.parse(_entryPrice!);
+        _profitAmount =
+            (double.parse(_entryPrice!) - double.parse(_takeProfit!)) *
+                _coinAmount;
+        _lossAmount = (double.parse(_entryPrice!) - double.parse(_stopLoss!)) *
+            _coinAmount;
       }
     });
-    debugPrint('Risk Percentage: $riskRatio');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Position Calculator'),
+        title: const Text('Position & Risk Calculator'),
+        actions: [
+          IconButton(
+            onPressed: _resetAllValue,
+            icon: const Icon(Icons.restart_alt_outlined),
+          )
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -95,47 +123,39 @@ class _DashboardState extends State<Dashboard> {
                 const SizedBox(
                   height: 8.0,
                 ),
+                const Text(
+                  'Entry Section',
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                CustomTextFormField(
+                  label: 'Total Capital',
+                  isDone: false,
+                  onChanged: (value) {
+                    setState(() {
+                      _totalCapital = value;
+                    });
+                  },
+                ),
                 Form(
                   key: _formKey,
                   child: Column(
                     children: [
                       // ======================== Entry Section ========================
-                      const Text(
-                        'Entry Section',
-                        style: TextStyle(
-                            fontSize: 18.0, fontWeight: FontWeight.bold),
-                      ),
                       const SizedBox(
                         height: 10,
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomTextFormField(
-                              label: 'Total Capital',
-                              isDone: false,
-                              onChanged: (value) {
-                                setState(() {
-                                  _totalCapital = double.parse(value);
-                                });
-                              },
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 8.0,
-                          ),
-                          Expanded(
-                            child: CustomTextFormField(
-                              label: 'Entry Price',
-                              isDone: false,
-                              onChanged: (value) {
-                                setState(() {
-                                  _entryPrice = double.parse(value);
-                                });
-                              },
-                            ),
-                          ),
-                        ],
+                      CustomTextFormField(
+                        myFocus: _entryPriceFocus,
+                        label: 'Entry Price',
+                        isDone: false,
+                        onChanged: (value) {
+                          setState(() {
+                            _entryPrice = value;
+                          });
+                        },
                       ),
                       const SizedBox(
                         height: 10,
@@ -148,7 +168,7 @@ class _DashboardState extends State<Dashboard> {
                               isDone: false,
                               onChanged: (value) {
                                 setState(() {
-                                  _takeProfit = double.parse(value);
+                                  _takeProfit = value;
                                 });
                               },
                             ),
@@ -162,7 +182,7 @@ class _DashboardState extends State<Dashboard> {
                               isDone: true,
                               onChanged: (value) {
                                 setState(() {
-                                  _stopLoss = double.parse(value);
+                                  _stopLoss = value;
                                 });
                               },
                             ),
@@ -196,7 +216,7 @@ class _DashboardState extends State<Dashboard> {
                       CustomTextRow(
                         title: 'Position Size',
                         value: _positionSize.toStringAsFixed(2),
-                        isDollarShown: false,
+                        isDollarShown: true,
                       ),
                       CustomTextRow(
                         title: 'Risk%',
