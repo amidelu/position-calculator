@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'widgets/widgets.dart';
 
@@ -13,6 +14,7 @@ class _DashboardState extends State<Dashboard> {
   static final _formKey = GlobalKey<FormState>();
   bool _isLongActive = true;
   final FocusNode _entryPriceFocus = FocusNode();
+  final box = GetStorage();
 
   // Entry variables
   String? _totalCapital;
@@ -43,7 +45,8 @@ class _DashboardState extends State<Dashboard> {
 
   _allCalculation() {
     setState(() {
-      _riskAmount = (double.parse(_totalCapital!) * 1) / 100;
+      double totalCap = double.parse(_totalCapital!);
+      _riskAmount = (totalCap * 1) / 100;
 
       if (_isLongActive) {
         riskRatio = (double.parse(_entryPrice!) - double.parse(_stopLoss!)) /
@@ -132,9 +135,11 @@ class _DashboardState extends State<Dashboard> {
                 ),
                 CustomTextFormField(
                   label: 'Total Capital',
+                  initialValue: box.read('capital'),
                   isDone: false,
                   onChanged: (value) {
                     setState(() {
+                      box.write('capital', value);
                       _totalCapital = value;
                     });
                   },
