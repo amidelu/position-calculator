@@ -200,7 +200,6 @@ class _DashboardState extends State<Dashboard> {
                         width: MediaQuery.of(context).size.width,
                         child: CustomButton(
                           title: 'CALCULATE',
-                          buttonColor: Colors.deepPurple,
                           onTap: _allCalculation,
                         ),
                       ),
