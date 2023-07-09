@@ -17,9 +17,12 @@ class MyApp extends StatelessWidget {
       title: 'Position Calculator',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          brightness: Brightness.light, primaryColor: Colors.deepOrangeAccent),
-      darkTheme:
-          ThemeData(brightness: Brightness.dark, primaryColor: Colors.amber),
+        colorScheme: const ColorScheme.light()
+            .copyWith(primary: Colors.deepOrangeAccent),
+      ),
+      darkTheme: ThemeData(
+        colorScheme: const ColorScheme.dark().copyWith(primary: Colors.amber),
+      ),
       themeMode: ThemeMode.system,
       home: const Dashboard(),
     );
