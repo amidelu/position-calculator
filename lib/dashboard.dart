@@ -24,6 +24,7 @@ class _DashboardState extends State<Dashboard> {
 
   double _positionSize = 0.0;
   double riskRatio = 0.0;
+  double _showRiskRatio = 0.0;
   double _riskAmount = 0.0;
   double _coinAmount = 0.0;
   double _profitAmount = 0.0;
@@ -36,6 +37,7 @@ class _DashboardState extends State<Dashboard> {
 
       _positionSize = 0.0;
       riskRatio = 0.0;
+      _showRiskRatio = 0.0;
       _riskAmount = 0.0;
       _coinAmount = 0.0;
       _profitAmount = 0.0;
@@ -45,12 +47,14 @@ class _DashboardState extends State<Dashboard> {
 
   _allCalculation() {
     setState(() {
+      _totalCapital = box.read('capital');
       double totalCap = double.parse(_totalCapital!);
       _riskAmount = (totalCap * 1) / 100;
 
       if (_isLongActive) {
         riskRatio = (double.parse(_entryPrice!) - double.parse(_stopLoss!)) /
             double.parse(_entryPrice!);
+        _showRiskRatio = riskRatio * 100;
         _positionSize = _riskAmount / riskRatio;
         _coinAmount = _positionSize / double.parse(_entryPrice!);
         _profitAmount =
@@ -61,6 +65,7 @@ class _DashboardState extends State<Dashboard> {
       } else {
         riskRatio = (double.parse(_stopLoss!) - double.parse(_entryPrice!)) /
             double.parse(_entryPrice!);
+        _showRiskRatio = riskRatio * 100;
         _positionSize = _riskAmount / riskRatio;
         _coinAmount = _positionSize / double.parse(_entryPrice!);
         _profitAmount =
@@ -81,7 +86,8 @@ class _DashboardState extends State<Dashboard> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
             child: Column(
               children: [
                 // Top Button
@@ -134,7 +140,6 @@ class _DashboardState extends State<Dashboard> {
                   onChanged: (value) {
                     setState(() {
                       box.write('capital', value);
-                      _totalCapital = value;
                     });
                   },
                 ),
@@ -194,7 +199,6 @@ class _DashboardState extends State<Dashboard> {
                         width: MediaQuery.of(context).size.width,
                         child: CustomButton(
                           title: 'CALCULATE',
-                          buttonColor: Colors.deepPurple,
                           onTap: _allCalculation,
                         ),
                       ),
@@ -219,7 +223,7 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       CustomTextRow(
                         title: 'Risk%',
-                        value: '${riskRatio.toStringAsFixed(4)}%',
+                        value: '${_showRiskRatio.toStringAsFixed(2)}%',
                         isDollarShown: false,
                       ),
 
