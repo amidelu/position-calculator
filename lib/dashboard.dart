@@ -77,12 +77,6 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Position & Risk Calculator'),
-        actions: [
-          IconButton(
-            onPressed: _resetAllValue,
-            icon: const Icon(Icons.restart_alt_outlined),
-          )
-        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -252,6 +246,12 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Reset',
+        onPressed: _resetAllValue,
+        child: const Icon(Icons.restart_alt_outlined),
+      ),
+      resizeToAvoidBottomInset: false,
     );
   }
 }

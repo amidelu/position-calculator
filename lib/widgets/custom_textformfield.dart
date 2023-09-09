@@ -24,7 +24,7 @@ class CustomTextFormField extends StatelessWidget {
       textInputAction: isDone ? TextInputAction.done : TextInputAction.next,
       decoration: InputDecoration(
         prefixText: '\$',
-        contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
+        contentPadding: const EdgeInsets.all(10.0),
         label: Text(label ?? ''),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
