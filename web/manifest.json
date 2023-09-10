@@ -1,35 +1,35 @@
 {
-    "name": "position_calculator",
-    "short_name": "position_calculator",
-    "start_url": ".",
-    "display": "standalone",
-    "background_color": "#hexcode",
-    "theme_color": "#hexcode",
-    "description": "Cryptocurrency trading risk and position calculator.",
-    "orientation": "portrait-primary",
-    "prefer_related_applications": false,
-    "icons": [
-        {
-            "src": "icons/Icon-192.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "icons/Icon-512.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        },
-        {
-            "src": "icons/Icon-maskable-192.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "maskable"
-        },
-        {
-            "src": "icons/Icon-maskable-512.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "maskable"
-        }
-    ]
+     "name": "Position/Risk Calculator",
+     "short_name": "Position/Risk Calculator",
+     "start_url": ".",
+     "display": "standalone",
+     "background_color": "#hexcode",
+     "theme_color": "#hexcode",
+     "description": "Cryptocurrency trading risk and position calculator.",
+     "orientation": "portrait-primary",
+     "prefer_related_applications": false,
+     "icons": [
+          {
+               "src": "icons/Icon-192.png",
+               "sizes": "192x192",
+               "type": "image/png"
+          },
+          {
+               "src": "icons/Icon-512.png",
+               "sizes": "512x512",
+               "type": "image/png"
+          },
+          {
+               "src": "icons/Icon-maskable-192.png",
+               "sizes": "192x192",
+               "type": "image/png",
+               "purpose": "maskable"
+          },
+          {
+               "src": "icons/Icon-maskable-512.png",
+               "sizes": "512x512",
+               "type": "image/png",
+               "purpose": "maskable"
+          }
+     ]
 }
